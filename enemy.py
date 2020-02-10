@@ -1,16 +1,16 @@
-import pygame
+﻿import pygame
 from math import sin, cos, pi, radians
 
 
-class Car(object):
+class Enemy(object):
     def __init__(self, file, x, y):
         """ Конструктор класса """
-        self.original_image = pygame.image.load(file)       # исходное изображение
+        self.original_image = pygame.image.load(file)
         self.image = self.original_image
         self.rect = self.image.get_rect()
         self.x = x                                          # координата x
         self.y = y                                          # координата y
-        self.V = 0                                          # скорость
+        self.V = 2                                          # скорость
         self.max_V = 10
         self.angle = 0.0                                    # угол поворота
         self.vel_x = self.V * cos(radians(self.angle))      # скорость по оси x
@@ -19,6 +19,8 @@ class Car(object):
 
     def update(self):
         """ Обновление координат """
+        # if self.vel_y > 400 or self.vel_y <0:
+        #     self.V = -self.V
         self.vel_x = self.V * cos(radians(self.angle))
         self.vel_y = self.V * sin(radians(self.angle))
         self.x += self.vel_x
@@ -32,14 +34,14 @@ class Car(object):
         key = pygame.key.get_pressed()
         if key[pygame.K_ESCAPE]:
             pygame.quit()
-        elif key[pygame.K_s]:
+        elif key[pygame.K_DOWN]:
             self.V = 0
-        elif key[pygame.K_w]:
+        elif key[pygame.K_UP]:
             if self.V < self.max_V:
                 self.V += 1
-        elif key[pygame.K_d]:
+        elif key[pygame.K_RIGHT]:
             self.angle = (self.angle + 5) % 360
-        elif key[pygame.K_a]:
+        elif key[pygame.K_LEFT]:
             self.angle = (self.angle - 5) % 360
 
     def draw(self, surface):
